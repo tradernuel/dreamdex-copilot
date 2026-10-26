@@ -1,0 +1,31 @@
+{
+  "name": "dreamdex-copilot",
+  "version": "0.1.0",
+  "description": "Telegram perps co-pilot for dreamDEX on Somnia: trade from chat, with an always-on risk guard.",
+  "type": "module",
+  "license": "MIT",
+  "author": "tradernuel",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "tsx src/bot.ts",
+    "smoke": "tsx scripts/smoke.ts",
+    "markets": "tsx scripts/markets.ts",
+    "evidence": "tsx scripts/evidence.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@somnia-chain/markets-sdk": "0.32.1",
+    "dotenv": "18.0.9",
+    "grammy": "1.46.0",
+    "viem": "2.57.11"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
+}
