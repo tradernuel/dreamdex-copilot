@@ -24,7 +24,7 @@ export async function connect(cfg: ChainConfig): Promise<Venue> {
   });
   await ex.loadMarkets();
   const anyPerp = listPerps(ex)[0];
-  if (!anyPerp) throw new Error("No tradeable perp markets found on Hideki — is the indexer up?");
+  if (!anyPerp) throw new Error("No tradeable perp markets loaded. Check your network can reach api.hideki2.infra.testnet.somnia.network and the Hideki indexer (INDEXER_URL).");
   return {
     ex,
     account: privateKeyToAccount(cfg.privateKey).address,
@@ -37,7 +37,7 @@ export async function connect(cfg: ChainConfig): Promise<Venue> {
 /** Tradeable perp markets only: deployed AND registered AND not close-only. */
 export function listPerps(ex: SomniaMarkets): UnifiedMarket[] {
   return Object.values(ex.markets)
-    .filter((m) => m.type === "swap" && m.active && m.perpStatus?.tradeable !== false)
+    .filter((m) => (m.type === "swap" || m.info.marketType === "PERP") && m.perpStatus?.tradeable !== false)
     .sort((a, b) => a.symbol.localeCompare(b.symbol));
 }
 
