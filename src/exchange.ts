@@ -9,6 +9,8 @@ export interface Venue {
   ex: SomniaMarkets;
   account: Address;
   marginBank: Address;
+  /** Decimals of the MarginBank collateral (USDso), read off a perp market row. */
+  collateralDecimals: number;
   cfg: ChainConfig;
 }
 
@@ -21,10 +23,13 @@ export async function connect(cfg: ChainConfig): Promise<Venue> {
     privateKey: cfg.privateKey,
   });
   await ex.loadMarkets();
+  const anyPerp = listPerps(ex)[0];
+  if (!anyPerp) throw new Error("No tradeable perp markets found on Hideki — is the indexer up?");
   return {
     ex,
     account: privateKeyToAccount(cfg.privateKey).address,
     marginBank: SOMNIA_HIDEKI_TESTNET_ADDRESSES.marginBank as Address,
+    collateralDecimals: anyPerp.info.quoteDecimals,
     cfg,
   };
 }
